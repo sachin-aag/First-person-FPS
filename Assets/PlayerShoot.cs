@@ -32,11 +32,13 @@ public class PlayerShoot : NetworkBehaviour
         Debug.Log("Just shot ");
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, weapon.range, mask))
         {
-            Debug.Log(_hit.collider.name);
-            //if(_hit.collider.tag == PLAYER_TAG)
-            //{
+            Debug.Log(_hit.collider.tag);
+            if(_hit.collider.tag == PLAYER_TAG)
+            {
+                Debug.Log("here");
+                Debug.Log(_hit.collider.name + " has been shot");
                 CmdPlayerShot(_hit.collider.name);
-            //}
+            }
         }
     }
     [Command]
