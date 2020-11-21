@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Glock
-  damage: 10
+  damage: 40
   range: 100
 --- !u!114 &1276487186646397811
 MonoBehaviour:
@@ -320,6 +320,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   maxHealth: 100
+  disableOnDeath:
+  - {fileID: 7515510257168174268}
+  - {fileID: 2466622357027458363}
 --- !u!1 &7515510257340883238
 GameObject:
   m_ObjectHideFlags: 0
