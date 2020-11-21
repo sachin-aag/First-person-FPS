@@ -289,7 +289,7 @@ MonoBehaviour:
   weapon: {fileID: 387259482646844543}
   mask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 567
 --- !u!114 &387259482646844543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,6 +317,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d9a945b66d536f4d9f8396db6e13eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  maxHealth: 100
 --- !u!1 &7515510257340883238
 GameObject:
   m_ObjectHideFlags: 0
