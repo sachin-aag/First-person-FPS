@@ -35,6 +35,7 @@ GameObject:
   - component: {fileID: 4972492470076267129}
   - component: {fileID: 2466622357027458363}
   - component: {fileID: 387259482646844543}
+  - component: {fileID: 1276487186646397811}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -304,6 +305,18 @@ MonoBehaviour:
   _name: Glock
   damage: 10
   range: 100
+--- !u!114 &1276487186646397811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7515510257168174267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9a945b66d536f4d9f8396db6e13eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7515510257340883238
 GameObject:
   m_ObjectHideFlags: 0

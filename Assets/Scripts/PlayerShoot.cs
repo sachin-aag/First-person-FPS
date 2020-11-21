@@ -29,21 +29,20 @@ public class PlayerShoot : NetworkBehaviour
     private void Shoot()
     {
         RaycastHit _hit;
-        Debug.Log("Just shot ");
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, weapon.range, mask))
         {
             Debug.Log(_hit.collider.tag);
             if(_hit.collider.tag == PLAYER_TAG)
             {
-                Debug.Log("here");
-                Debug.Log(_hit.collider.name + " has been shot");
+                
                 CmdPlayerShot(_hit.collider.name);
             }
         }
     }
+    //Called only on Server
     [Command]
-    void CmdPlayerShot(string _ID)
+    void CmdPlayerShot(string _playerID)
     {
-        Debug.Log(_ID + " has been shot");
+        Debug.Log(_playerID + " has been shot");
     }
 }

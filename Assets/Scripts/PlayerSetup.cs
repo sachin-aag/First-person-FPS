@@ -2,7 +2,7 @@
 using UnityEngine;
 using Mirror;
 
-
+[RequireComponent(typeof(Player))]
 public class PlayerSetup : NetworkBehaviour
 
 {
@@ -24,12 +24,14 @@ public class PlayerSetup : NetworkBehaviour
                 sceneCamera.gameObject.SetActive(false);
             }
         }
-        RegisterPlayer();
+        //RegisterPlayer();
     }
-    void RegisterPlayer()
+    public override void OnStartClient()
     {
-        string ID = "Player" + GetComponent<NetworkIdentity>().netId;
-        transform.name = ID;
+        base.OnStartClient();
+        string _netID = GetComponent<NetworkIdentity>().netId.ToString();
+        Player _player = GetComponent<Player>();
+        GameManager.RegisterPlayer(_netID, _player);
     }
     private void DisableComponents()
     {
@@ -49,5 +51,6 @@ public class PlayerSetup : NetworkBehaviour
         {
             sceneCamera.gameObject.SetActive(true);
         }
+        GameManager.DeregisterPlayer(transform.name);
     }
 }
