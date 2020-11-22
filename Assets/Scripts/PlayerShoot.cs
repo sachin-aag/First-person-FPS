@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-
+[RequireComponent(typeof(WeaponManager))]
 public class PlayerShoot : NetworkBehaviour
 {
     private const string PLAYER_TAG = "Player";
     [SerializeField] private Camera cam;
-    private PlayerWeapon weapon;
+    private PlayerWeapon currentWeapon;
     [SerializeField] private LayerMask mask;
-    [SerializeField]
-    private GameObject weaponGFX;
-    [SerializeField]
-    private string weaponLayerName = "Weapon";
+    private WeaponManager weaponManager;
+    public PlayerWeapon GetCurrentWeapon()
+    {
+        return currentWeapon;
+    }
 
     private void Start()
     {
@@ -22,21 +23,37 @@ public class PlayerShoot : NetworkBehaviour
             this.enabled = false;
         }
 
-        weaponGFX.layer = LayerMask.NameToLayer(weaponLayerName);
+        weaponManager = GetComponent<WeaponManager>();
      
     }
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        currentWeapon = weaponManager.GetCurrentWeapon();
+        if(currentWeapon.fireRate <= 0)
         {
-            Shoot();
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Shoot();
+            }
         }
+        else
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                InvokeRepeating("Shoot", 0, 1/currentWeapon.fireRate);
+            }else if (Input.GetButtonUp("Fire1"))
+            {
+                CancelInvoke("Shoot");
+            }
+        }
+       
     }
     [Client]
     private void Shoot()
     {
+        Debug.Log("Test firre");
         RaycastHit _hit;
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, weapon.range, mask))
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, currentWeapon.range, mask))
         {
 
             Debug.Log(_hit.collider.name);
@@ -44,7 +61,7 @@ public class PlayerShoot : NetworkBehaviour
             if (_hit.collider.tag == PLAYER_TAG)
             {
                 Debug.Log(_hit.collider.name);
-                CmdPlayerShot(_hit.collider.name, weapon.damage);
+                CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
             }
         }
     }
