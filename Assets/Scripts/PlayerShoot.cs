@@ -9,7 +9,7 @@ public class PlayerShoot : NetworkBehaviour
     [SerializeField] private Camera cam;
     public PlayerWeapon weapon;
     [SerializeField] private LayerMask mask;
-
+    
 
     private void Start()
     {
