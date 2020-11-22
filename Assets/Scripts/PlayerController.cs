@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(ConfigurableJoint))]
-
+[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
@@ -15,25 +15,28 @@ public class PlayerController : MonoBehaviour
     [Header("Spring Settings")]
     [SerializeField] private float jointSpring = 20f;
     [SerializeField] private float jointMaxForce = 40f;
+    private Animator animator;
     private PlayerMotor motor;
     private void Start()
     {
         motor = GetComponent<PlayerMotor>();
         cj = GetComponent<ConfigurableJoint>();
         SetJointSettings(jointSpring, jointMaxForce);
+        animator = GetComponent<Animator>();
 
     }
     private void Update()
     {
         //Get velocity as 3d vector
-        float _xMov = Input.GetAxisRaw("Horizontal");
-        float _zMov = Input.GetAxisRaw("Vertical");
+        float _xMov = Input.GetAxis("Horizontal");
+        float _zMov = Input.GetAxis("Vertical");
 
         Vector3 moveHorizontal = transform.right * _xMov; //(1,0,0)
         Vector3 moveVertical = transform.forward * _zMov;//(0,0,1)
 
 
-        Vector3 velocity = (moveHorizontal + moveVertical).normalized * speed;
+        Vector3 velocity = (moveHorizontal + moveVertical)* speed;
+        animator.SetFloat("ForwardVelocity", _zMov);
 
         motor.Move(velocity);
         float _yRot = Input.GetAxisRaw("Mouse X");
