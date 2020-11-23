@@ -219,6 +219,8 @@ MonoBehaviour:
   lookSensitivity: 5
   cameraSensitivity: -3
   thrusterForce: 1300
+  thrusterFuelBurnSpeed: 1
+  thrusterFuelRegenSpeed: 0.3
   jointSpring: 20
   jointMaxForce: 40
 --- !u!114 &8124793958291087663
@@ -262,7 +264,7 @@ MonoBehaviour:
   remoteLayerName: Remote Player Layer
   dontdrawlayer: DontDraw
   playerGraphics: {fileID: 7515510257764068750}
-  playerUIPrefab: {fileID: 2758798697154819133, guid: 4ff04b1c745117b4b91b01f6d329be0d,
+  playerUIPrefab: {fileID: 7427304902461839367, guid: e4d5ec1520fda3d4a8097af74813548a,
     type: 3}
 --- !u!114 &7671161485147833946
 MonoBehaviour:
