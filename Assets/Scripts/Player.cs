@@ -12,6 +12,9 @@ public class Player : NetworkBehaviour
     private bool[] wasEnabled;
     [SyncVar]
     private bool _isDead = false;
+    [SerializeField] private GameObject[] objDisableOnDeath;
+    [SerializeField]
+    private GameObject deathEffect;
     public bool isDead
     {
         get { return _isDead; }
@@ -49,11 +52,18 @@ public class Player : NetworkBehaviour
         {
             disableOnDeath[i].enabled = false;
         }
+
+        for (int i = 0; i < objDisableOnDeath.Length; i++)
+        {
+            objDisableOnDeath[i].SetActive(false);
+        }
         Collider _col = GetComponent<Collider>();
         if (_col != null)
         {
             _col.enabled = false;
         }
+        GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(_gfxIns, 3f);
         //Log message
         Debug.Log(transform.name + " is DEAD!");
 
@@ -78,6 +88,10 @@ public class Player : NetworkBehaviour
         {
             disableOnDeath[i].enabled = wasEnabled[i];
         }
+        for (int i = 0; i < objDisableOnDeath.Length; i++)
+        {
+            objDisableOnDeath[i].SetActive(true);
+        }
 
         //Since collider is not a behaviour
         Collider _col = GetComponent<Collider>();
@@ -86,7 +100,7 @@ public class Player : NetworkBehaviour
             _col.enabled = true;
         }
     }
-    /*private void Update()
+    private void Update()
     {
         if (!isLocalPlayer)
             return;
@@ -94,5 +108,5 @@ public class Player : NetworkBehaviour
         {
             RpcTakeDamage(1000);
         }
-    }*/
+    }
 }

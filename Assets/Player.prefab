@@ -436,6 +436,7 @@ MonoBehaviour:
   disableOnDeath:
   - {fileID: 7515510257168174268}
   - {fileID: 2466622357027458363}
+  deathEffect: {fileID: 0}
 --- !u!135 &4982599451142236615
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -571,7 +572,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 4919
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
