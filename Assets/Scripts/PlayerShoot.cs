@@ -52,8 +52,18 @@ public class PlayerShoot : NetworkBehaviour
     [Command]
     private void CmdOnShoot()
     {
-        Debug.Log("Here");
         RpcDoShootEffects(); 
+    }
+    [Command]
+    private void CmdOnHit(Vector3 _pos, Vector3 _normal)
+    {
+        RpcDoHitEffect(_pos, _normal);
+    }
+    [ClientRpc]
+    void RpcDoHitEffect(Vector3 _pos, Vector3 _normal)
+    {
+        GameObject hiteffectRef = (GameObject)Instantiate(weaponManager.GetWeaponGraphics().hitEffectPrefab, _pos, Quaternion.LookRotation(_normal));
+        Destroy(hiteffectRef, 2f);
     }
     //Is called on all clients when we need to do a shoot efect
     [ClientRpc]
@@ -65,7 +75,6 @@ public class PlayerShoot : NetworkBehaviour
     [Client]
     private void Shoot()
     {
-        Debug.Log("Test firre");
         RaycastHit _hit;
         if (!isLocalPlayer)
         {
@@ -75,13 +84,13 @@ public class PlayerShoot : NetworkBehaviour
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, currentWeapon.range, mask))
         {
 
-            Debug.Log(_hit.collider.name);
-            Debug.Log(_hit.collider.tag);
+            
             if (_hit.collider.tag == PLAYER_TAG)
             {
                 Debug.Log(_hit.collider.name);
                 CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
             }
+            CmdOnHit(_hit.point, _hit.normal);
         }
 
 
