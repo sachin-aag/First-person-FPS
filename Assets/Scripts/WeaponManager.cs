@@ -14,6 +14,7 @@ public class WeaponManager : NetworkBehaviour
     [SerializeField]
     private string weaponLayerName = "Weapon";
     [SerializeField] private Transform weaponHolder;
+    private WeaponGraphics currentGraphics;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,14 +25,24 @@ public class WeaponManager : NetworkBehaviour
     {
         currentWeapon = _weapon;
         GameObject _weaponIns = Instantiate(_weapon.graphics, weaponHolder.position, weaponHolder.rotation);
+
         _weaponIns.transform.SetParent(weaponHolder);
+        currentGraphics = _weaponIns.GetComponent<WeaponGraphics>();
+        if(currentGraphics == null)
+        {
+            Debug.LogError("No weapon graphics component on the weapon obj");
+        }
         if (isLocalPlayer)
         {
-            _weaponIns.layer = LayerMask.NameToLayer(weaponLayerName);
+            Util.SetLayerRecursively(_weaponIns, LayerMask.NameToLayer(weaponLayerName));
         }
     }
     public PlayerWeapon GetCurrentWeapon()
     {
         return currentWeapon;
+    }
+    public WeaponGraphics GetWeaponGraphics()
+    {
+        return currentGraphics;
     }
 }

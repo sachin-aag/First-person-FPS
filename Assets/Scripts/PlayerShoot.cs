@@ -40,7 +40,7 @@ public class PlayerShoot : NetworkBehaviour
         {
             if (Input.GetButtonDown("Fire1"))
             {
-                InvokeRepeating("Shoot", 0, 1/currentWeapon.fireRate);
+                InvokeRepeating("Shoot", 0, 1f/currentWeapon.fireRate);
             }else if (Input.GetButtonUp("Fire1"))
             {
                 CancelInvoke("Shoot");
@@ -48,11 +48,30 @@ public class PlayerShoot : NetworkBehaviour
         }
        
     }
+    //Is called on the server when a player shoots
+    [Command]
+    private void CmdOnShoot()
+    {
+        Debug.Log("Here");
+        RpcDoShootEffects(); 
+    }
+    //Is called on all clients when we need to do a shoot efect
+    [ClientRpc]
+    void RpcDoShootEffects()
+    {
+        Debug.Log(weaponManager.GetWeaponGraphics().muzzleFlash.transform.position.ToString());
+        weaponManager.GetWeaponGraphics().muzzleFlash.Play();
+    }
     [Client]
     private void Shoot()
     {
         Debug.Log("Test firre");
         RaycastHit _hit;
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+        CmdOnShoot();
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out _hit, currentWeapon.range, mask))
         {
 
@@ -64,6 +83,9 @@ public class PlayerShoot : NetworkBehaviour
                 CmdPlayerShot(_hit.collider.name, currentWeapon.damage);
             }
         }
+
+
+
     }
     //Called only on Server
     [Command]
