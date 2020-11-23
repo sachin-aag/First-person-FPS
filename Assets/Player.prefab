@@ -223,6 +223,9 @@ MonoBehaviour:
   thrusterFuelRegenSpeed: 0.3
   jointSpring: 20
   jointMaxForce: 40
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!114 &8124793958291087663
 MonoBehaviour:
   m_ObjectHideFlags: 0
