@@ -269,6 +269,7 @@ MonoBehaviour:
   playerGraphics: {fileID: 7515510257764068750}
   playerUIPrefab: {fileID: 7427304902461839367, guid: e4d5ec1520fda3d4a8097af74813548a,
     type: 3}
+  playerUIinstance: {fileID: 0}
 --- !u!114 &7671161485147833946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,7 +437,13 @@ MonoBehaviour:
   disableOnDeath:
   - {fileID: 7515510257168174268}
   - {fileID: 2466622357027458363}
-  deathEffect: {fileID: 0}
+  objDisableOnDeath:
+  - {fileID: 2590164691918381178}
+  - {fileID: 7515510257340883238}
+  deathEffect: {fileID: 4843911845201397037, guid: 5c8bd32cdb9e1c343b64effb1efebc17,
+    type: 3}
+  spawnEffect: {fileID: 8004971161394540805, guid: ea3df198628b85d4994821aac5321967,
+    type: 3}
 --- !u!135 &4982599451142236615
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -701,6 +708,12 @@ Transform:
 --- !u!4 &787740211566980949 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 512434494422750243, guid: 822b6907bd9a694438bb8d6f79356c4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1004889827507977078}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2590164691918381178 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3314659123446536972, guid: 822b6907bd9a694438bb8d6f79356c4d,
     type: 3}
   m_PrefabInstance: {fileID: 1004889827507977078}
   m_PrefabAsset: {fileID: 0}

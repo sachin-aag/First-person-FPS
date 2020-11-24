@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-
+[RequireComponent(typeof(PlayerSetup))]
 public class Player : NetworkBehaviour
 {
     [SerializeField] private int maxHealth = 100;
@@ -15,6 +15,8 @@ public class Player : NetworkBehaviour
     [SerializeField] private GameObject[] objDisableOnDeath;
     [SerializeField]
     private GameObject deathEffect;
+    [SerializeField]
+    private GameObject spawnEffect;
     public bool isDead
     {
         get { return _isDead; }
@@ -34,6 +36,7 @@ public class Player : NetworkBehaviour
             Die();
         }
     }
+    [Client]
     public void Setup()
     {
         wasEnabled = new bool[disableOnDeath.Length];
@@ -64,6 +67,13 @@ public class Player : NetworkBehaviour
         }
         GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
         Destroy(_gfxIns, 3f);
+
+        //Switch cameras
+        if (isLocalPlayer)
+        {
+            GameManager.instance.SetSceneCameraActive(true);
+            GetComponent<PlayerSetup>().playerUIinstance.SetActive(false);
+        }
         //Log message
         Debug.Log(transform.name + " is DEAD!");
 
@@ -75,10 +85,11 @@ public class Player : NetworkBehaviour
     IEnumerator Respawn()
     {
         yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTime);
-        SetDefaults();
+        
         Transform _spawnPoint = NetworkManager.singleton.GetStartPosition();
         transform.position = _spawnPoint.position;
         transform.rotation = _spawnPoint.rotation;
+        SetDefaults();
     }
     public void SetDefaults()
     {
@@ -98,7 +109,16 @@ public class Player : NetworkBehaviour
         if(_col != null)
         {
             _col.enabled = true;
+            if (isLocalPlayer)
+            {
+                GameManager.instance.SetSceneCameraActive(false);
+                GetComponent<PlayerSetup>().playerUIinstance.SetActive(true);
+
+            }
         }
+        //create spawn effects
+        GameObject _gfxIns = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
+        Destroy(_gfxIns, 3f);
     }
     private void Update()
     {
