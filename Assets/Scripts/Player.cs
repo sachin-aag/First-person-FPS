@@ -146,7 +146,7 @@ public class Player : NetworkBehaviour
         GameObject _gfxIns = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
         Destroy(_gfxIns, 3f);
     }
-    private void Update()
+    /*private void Update()
     {
         if (!isLocalPlayer)
             return;
@@ -154,5 +154,5 @@ public class Player : NetworkBehaviour
         {
             RpcTakeDamage(1000);
         }
-    }
+    }*/
 }
