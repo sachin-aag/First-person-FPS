@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using Mirror;
+using Mirror;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
     public MatchSettings matchSettings;
@@ -54,7 +54,8 @@ public class GameManager : MonoBehaviour
         GUILayout.BeginVertical();
         foreach(string _playerID in players.Keys)
         {
-            GUILayout.Label(_playerID + " - " + players[_playerID].transform.name);
+            if(players[_playerID]!=null)
+                GUILayout.Label(_playerID + " - " + players[_playerID].transform.name);
         }
         GUILayout.EndVertical();
         GUILayout.EndArea();

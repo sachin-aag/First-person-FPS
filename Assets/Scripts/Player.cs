@@ -17,6 +17,7 @@ public class Player : NetworkBehaviour
     private GameObject deathEffect;
     [SerializeField]
     private GameObject spawnEffect;
+    private bool firstSetup = true;
     public bool isDead
     {
         get { return _isDead; }
@@ -36,15 +37,36 @@ public class Player : NetworkBehaviour
             Die();
         }
     }
-    [Client]
-    public void Setup()
+
+    public void SetupPlayer()
     {
-        wasEnabled = new bool[disableOnDeath.Length];
-        for (int i = 0; i < wasEnabled.Length; i++)
+        if (isLocalPlayer)
         {
-            wasEnabled[i] = disableOnDeath[i].enabled;
+            GameManager.instance.SetSceneCameraActive(false);
+            GetComponent<PlayerSetup>().playerUIinstance.SetActive(true);
+        }
+        CmdBroadcastNewPlayerSetup();
+    }
+    [Command]
+    private void CmdBroadcastNewPlayerSetup()
+    {
+        RpcSetupPlayerOnAllClients();
+    }
+    [ClientRpc]
+    private void RpcSetupPlayerOnAllClients()
+    {
+        if (firstSetup)
+        {
+            wasEnabled = new bool[disableOnDeath.Length];
+            for (int i = 0; i < disableOnDeath.Length; i++)
+            {
+                wasEnabled[i] = disableOnDeath[i].enabled;
+            }
+            firstSetup = false;
         }
         SetDefaults();
+
+
     }
     private void Die()
     {
@@ -55,11 +77,12 @@ public class Player : NetworkBehaviour
         {
             disableOnDeath[i].enabled = false;
         }
-
         for (int i = 0; i < objDisableOnDeath.Length; i++)
         {
             objDisableOnDeath[i].SetActive(false);
         }
+
+
         Collider _col = GetComponent<Collider>();
         if (_col != null)
         {
@@ -74,13 +97,18 @@ public class Player : NetworkBehaviour
             GameManager.instance.SetSceneCameraActive(true);
             GetComponent<PlayerSetup>().playerUIinstance.SetActive(false);
         }
+     
+
+
+
+        
         //Log message
         Debug.Log(transform.name + " is DEAD!");
 
         // Respawn method
         StartCoroutine(Respawn());
 
-        Debug.Log(transform.name + " respawned");
+        
     }
     IEnumerator Respawn()
     {
@@ -89,7 +117,10 @@ public class Player : NetworkBehaviour
         Transform _spawnPoint = NetworkManager.singleton.GetStartPosition();
         transform.position = _spawnPoint.position;
         transform.rotation = _spawnPoint.rotation;
-        SetDefaults();
+        yield return new WaitForSeconds(0.1f);
+        
+        SetupPlayer();
+        Debug.Log(transform.name + " respawned");
     }
     public void SetDefaults()
     {
@@ -109,12 +140,7 @@ public class Player : NetworkBehaviour
         if(_col != null)
         {
             _col.enabled = true;
-            if (isLocalPlayer)
-            {
-                GameManager.instance.SetSceneCameraActive(false);
-                GetComponent<PlayerSetup>().playerUIinstance.SetActive(true);
-
-            }
+           
         }
         //create spawn effects
         GameObject _gfxIns = (GameObject)Instantiate(spawnEffect, transform.position, Quaternion.identity);
